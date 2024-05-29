@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    
+}
+.container{
+    width: 50%;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+.pretraga{
+    margin-bottom: 20px;
+}
+.pretraga label{
+    margin-right: 10px;
+}
+.pretraga input{
+    margin-right: 10px;
+    padding: 5px;
+}
+.tabela{
+    width: 100%;
+    max-height: 10px;
+    margin-bottom: 20px;
+    overflow-x: scroll;
+    border-collapse: collapse;
+}
+.tabela th,td{
+    border: 1px solid #ddd;
+}
+.tabela th{
+    background-color: beige;;
+}
+.tabela tbody tr{
+    height: 20px;
+}
+.tabela tbody td {
+    height: 20px; 
+    overflow: hidden; 
+    line-height: 20px; 
+}
+.button{
+    display: flex;
+    margin-left: 94%;
+}
+#editModal {
+    width: 200px;
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#editForm label {
+    margin-top: 10px;
+}
+
+#editForm input {
+    padding: 5px;
+    margin-top: 20px;
+}
+.modal{
+    visibility: hidden;
+}
+.modal2{
+    visibility: visible;
+}
+

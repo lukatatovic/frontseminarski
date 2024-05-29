@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vozac</title>
+    <link rel="stylesheet" href="css/vozac.css">
+</head>
+<body>
+    
+    <div class="container-vozac">
+        <input type="text" id="search" placeholder="Pretrazi">
+        <button class="button-pretrazi" onclick="search()">Pretrazi</button>
+        <table class="tabela">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Datum rodjenja</th>
+                <th>Drzava</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody" onclick="clicked()">
+                
+            </tbody>
+        </table>
+    <div class="button">
+        <button onclick="edit()">Izmeni</button>
+    </div>    
+    </div>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closed()">&times;</span>
+            <form id="editForm">
+                <div class="polja">
+                <label for="id" class="labela">ID:</label>
+                <input type="text" id="id" name="id" class="id"><br><br>
+                </div>
+                <div class="polja">
+                <label for="ime" class="labela">Ime:</label>
+                <input type="text" id="ime" name="ime" ><br><br>
+                </div>
+                <div class="polja">
+                <label for="prezime"class="labela">Prezime:</label>
+                <input type="text" id="prezime" name="prezime" ><br><br>
+                </div>
+                <div class="polja">
+                <label for="datum" class="labela">Datum rodjenja:</label>
+                <input type="date" id="datum" name="datum" ><br><br>
+                </div>
+                <div class="polja">
+                <label for="drzava" class="labela">Drzava:</label>
+                <input type="text" id="drzava" name="drzava"><br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/vozac.js"></script>
+</body>
+</html>
