@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trka</title>
+    <link rel="stylesheet" href="css/trka.css">
+</head>
+<body>
+    <div class="container">
+        <div class="pretraga">
+            <label for="search">Grad:</label>
+            <input type="text" id="search" placeholder="Pretrazi">
+            <button class="button-pretrazi" onclick="search()">Pretrazi</button>
+            <button class="button-obrisi" onclick="obrisi()">Obrisi</button>
+        </div>
+        <table class="tabela" id="tabela-trka">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Naziv grada</th>
+                    <th>Duzina</th>
+                    <th>Broj krugova</th>
+                    <th>Broj takmicara</th>
+                    <th>Datum</th>
+                    <th>Vreme</th>
+                    <th>Trka po suvom</th>
+                </tr>
+            </thead>
+            <tbody id="body" onclick="clicked()">
+
+            </tbody>
+        </table>
+        <b>Takmicari</b>
+        <table class="tabela" id="tabela-takmicari">
+            <thead>
+                <tr>
+                    <th>Vozac</th>
+                    <th>Automobil</th>
+                    <th>Start</th>
+                    <th>Kraj</th>
+                    <th>Broj automobila</th>
+                    <th>Vreme</th>
+                </tr>
+            </thead>
+            <tbody id="body-takmicari">
+
+            </tbody>
+        </table>
+    </div>
+    <script src="js/trka.js"></script>
+</body>
+</html>

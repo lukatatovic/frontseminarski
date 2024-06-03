@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/dodajtrku.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="trka">
+            <label for="brojkrugova">Broj krugova: </label>
+            <input type="number" name="brojkrugova" id="brojkrugova"><br><br>
+            <label for="datum">Datum: </label>
+            <input type="date" name="datum" id="datum"><br><br>
+            <label for="suvo">Trka po suvom:</label>
+            <input type="checkbox" name="suvo" id="suvo"><br><br>
+            <label for="grad">Grad:</label>
+            <select name="grad" id="grad"></select>
+        </div>
+        <div class="takmicari">
+            <b>Takmicari</b><br><br>
+            <label for="vozac">Vozac:</label>
+            <select name="vozac" id="vozac"></select><br><br>
+            <label for="automobil">Automobil:</label>
+            <select name="automobil" id="automobil"></select><br><br>
+            <label for="start">Startna pozicija:</label>
+            <input type="number"id="start" name="start"><br><br>
+            <label for="broj">Broj na automobilu:</label>
+            <input type="number"id="broj" name="broj"><br><br>
+            <label for="vreme">Vreme:</label>
+            <input type="time"  name="vreme" id="vreme">
+            <button class="buttons " onclick="add()">Dodaj</button>
+            <button class="buttons" onclick="obrisi()">Obrisi</button>
+        </div>
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>Vozac</th>
+                    <th>Automobil</th>
+                    <th>Start</th>
+                    <th>Kraj</th>
+                    <th>Broj automobila</th>
+                    <th>Vreme</th>
+                </tr>
+            </thead>
+            <tbody id="body" onclick="clicked()"></tbody>
+        </table>
+        <button class="button-sacuvaj" onclick="save()">Sacuvaj</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            flatpickr("#vreme", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i:S",
+                time_24hr: true,
+                enableSeconds: true,
+                minuteIncrement:1,
+                secondIncrement:1
+            });
+        });
+
+    </script>
+    <script src="js/dodajtrku.js"></script>
+</body>
+</html>

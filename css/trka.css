@@ -1,4 +1,4 @@
-body{
+body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     justify-content: center;
@@ -6,7 +6,7 @@ body{
     display: flex;
     
 }
-.container-vozac{
+.container{
     width: 50%;
     margin-top: 50px;
     padding: 20px;
@@ -46,29 +46,6 @@ body{
     overflow: hidden; 
     line-height: 20px; 
 }
-.button{
-    display: flex;
-    margin-left: 94%;
-}
-#editModal {
-    width: 200px;
-    padding: 20px;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-#editForm label {
-    margin-top: 10px;
-}
-
-#editForm input {
-    padding: 5px;
-    margin-top: 20px;
-}
-.modal{
-    visibility: hidden;
-}
-.modal2{
-    visibility: visible;
+.button-pretrazi{
+    margin-right: 10px;
 }
