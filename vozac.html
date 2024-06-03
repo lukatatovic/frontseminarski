@@ -9,8 +9,11 @@
 <body>
     
     <div class="container-vozac">
-        <input type="text" id="search" placeholder="Pretrazi">
-        <button class="button-pretrazi" onclick="search()">Pretrazi</button>
+        <div class="pretraga">
+        <label for="search">Ime:</label>
+            <input type="text" id="search" placeholder="Pretrazi">
+            <button class="button-pretrazi" onclick="search()">Pretrazi</button>
+        </div>
         <table class="tabela">
             <thead>
             <tr>
@@ -25,34 +28,32 @@
                 
             </tbody>
         </table>
-    <div class="button">
-        <button onclick="edit()">Izmeni</button>
-    </div>    
+        <button class="button" onclick="edit()">Izmeni</button>
     </div>
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closed()">&times;</span>
             <form id="editForm">
-                <div class="polja">
+               
                 <label for="id" class="labela">ID:</label>
                 <input type="text" id="id" name="id" class="id"><br><br>
-                </div>
-                <div class="polja">
+                
+                
                 <label for="ime" class="labela">Ime:</label>
                 <input type="text" id="ime" name="ime" ><br><br>
-                </div>
-                <div class="polja">
+              
+                
                 <label for="prezime"class="labela">Prezime:</label>
                 <input type="text" id="prezime" name="prezime" ><br><br>
-                </div>
-                <div class="polja">
+                
+                
                 <label for="datum" class="labela">Datum rodjenja:</label>
                 <input type="date" id="datum" name="datum" ><br><br>
-                </div>
-                <div class="polja">
+                
+                
                 <label for="drzava" class="labela">Drzava:</label>
                 <input type="text" id="drzava" name="drzava"><br><br>
-                </div>
+                
             </form>
         </div>
     </div>
