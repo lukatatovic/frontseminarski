@@ -1,30 +1,75 @@
-const vozaci=['Max Verstappen','Charles Leclerc','Lewis Hamiltpon','Oscar Piastri','Carlos Sainz'];
-const automobili=[,'Zastava Yugo 55','Fiat Evo','Ferrari SF-23','Red Bull RB19'];
-const gradovi=[{naziv:'Baku',duzina:6003.0},{naziv:'Monca',duzina:5793.1}];
+let vozaci2=['Max Verstappen','Charles Leclerc','Lewis Hamiltpon','Oscar Piastri','Carlos Sainz'];
+let automobili2=['Zastava Yugo 55','Fiat Evo','Ferrari SF-23','Red Bull RB19'];
+let gradovi2=[{naziv:'Baku',duzina:6003.0},{naziv:'Monca',duzina:5793.1}];
 let takmicari=[];
 let selectedTakmicar=null;
+let selectedRoww= null;
 
 document.addEventListener('DOMContentLoaded',function(){
     const vozacSelect= document.getElementById('vozac');
-    vozaci.forEach(vozac=>{
-        const option= document.createElement('option');
-        option.textContent=vozac;
-        vozacSelect.appendChild(option);
-    });
+    fetch('http://localhost:9000/vozac')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(vozaci => {
+                vozaci.forEach(vozac=>{
+                const option= document.createElement('option');
+                option.textContent=vozac.ime+' '+vozac.prezime;
+                option.value= vozac.id;
+                vozacSelect.appendChild(option);
+            });
+            vozaci2=vozaci;
+        }
+        )
+        .catch(error => {
+            console.error('Greška:', error);
+        });
+    
 
     const autoSelect=document.getElementById('automobil');
-    automobili.forEach(auto=>{
-        const option2=document.createElement('option');
-        option2.textContent=auto;
-        autoSelect.appendChild(option2);
-    });
+    fetch('http://localhost:9000/automobil')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(automobili => {
+                automobili.forEach(auto=>{
+                const option= document.createElement('option');
+                option.textContent=auto.marka+' '+auto.model;
+                option.value= auto.id;
+                autoSelect.appendChild(option);
+            });
+            automobili2=automobili;
+        })
+        .catch(error => {
+            console.error('Greška:', error);
+        });
 
     const gradSelect=document.getElementById('grad');
-    gradovi.forEach(grad=>{
-        const option3=document.createElement('option');
-        option3.textContent=grad.naziv;
-        gradSelect.appendChild(option3);
-    })
+    fetch('http://localhost:9000/grad')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(gradovi => {
+                gradovi.forEach(grad=>{
+                const option= document.createElement('option');
+                option.textContent=grad.naziv;
+                option.value= grad.id;
+                gradSelect.appendChild(option);
+            });
+            gradovi2=gradovi;
+        })
+        .catch(error => {
+            console.error('Greška:', error);
+        });
 });
 
 function loadTableItems(){
@@ -32,34 +77,44 @@ function loadTableItems(){
     let dataHtml='';
     for (const item of takmicari) {
         dataHtml+=`<tr> 
-        <td>${item.vozac}</td>
-        <td>${item.automobil}</td>
-        <td>${item.start}</td>
-        <td>${item.kraj}</td>
-        <td>${item.broj}</td>
+        <td>${item.vozac.ime+' '+item.vozac.prezime}</td>
+        <td>${item.automobil.marka+' '+item.automobil.model}</td>
+        <td>${item.startnaPozicija}</td>
+        <td>${item.zavrsnaPozicija}</td>
+        <td>${item.brojNaAutomobilu}</td>
         <td>${item.vreme}</td> `
     }
     table.innerHTML=dataHtml;
 }
 function add(){
     const vozac = document.getElementById('vozac').value;
+    for(voz of vozaci2){
+        if(voz.id==vozac){
+            var v= voz;
+        }
+    }
     const automobil = document.getElementById('automobil').value;
+    for(auto of automobili2){
+        if(auto.id==automobil){
+            var a= auto;
+        }
+    }
     const start = document.getElementById('start').value;
     const broj = document.getElementById('broj').value;
     const vreme = document.getElementById('vreme').value;
 
-    const takmicar={vozac:vozac,automobil:automobil,start:start,kraj:0,broj:broj,vreme:vreme};
-    const exsits= takmicari.some(takm=> takm.vozac===vozac);
+    const takmicar={vozac:v,automobil:a,startnaPozicija:start,zavrsnaPozicija:0,brojNaAutomobilu:broj,vreme:vreme};
+    const exsits= takmicari.some(takm=> takm.vozac===v);
     if(exsits){
         console.log("Vec se trka");
         return;
     }
-    const exsits2= takmicari.some(takm=> takm.start===start);
+    const exsits2= takmicari.some(takm=> takm.startnaPozicija===start);
     if(exsits2){
         console.log("Vec neko startuje sa te pozicije");
         return;
     }
-    const exsits3= takmicari.some(takm=> takm.broj==broj);
+    const exsits3= takmicari.some(takm=> takm.brojNaAutomobilu==broj);
     if(exsits3){
         console.log("Vec neko ima ovaj broj automobila");
         return;
@@ -76,13 +131,12 @@ function sort(){
     });
     takmicari.sort((a,b)=>a.vremeSekunde-b.vremeSekunde);
     takmicari.forEach((takmicar,index)=>{
-        takmicar.kraj=index+1;
+        takmicar.zavrsnaPozicija=index+1;
     });
 }
 
 function obrisi(){
-    const name=selectedTakmicar.Vozac;
-    takmicari=takmicari.filter(takmicar => takmicar.vozac !== name);
+    takmicari=takmicari.filter((element, index) => index !== selectedRoww-1);
     sort(); 
     loadTableItems(); 
 }
@@ -92,8 +146,9 @@ function clicked(){
         let clickedRow= event.target.closest('tr');
         if(clickedRow){
             let rowData= extractData(clickedRow);
-            console.log(rowData);
-            selectedTakmicar= rowData;
+            selectedTakmicar=rowData;   
+            selectedRoww=clickedRow.rowIndex;
+           // obrisi(clickedRow.rowIndex);
         }
     })
 }
@@ -117,12 +172,37 @@ function extractData(row){
 function save(){
     const brojKrugova=document.getElementById('brojkrugova').value;
     const datum=document.getElementById('datum').value;
-    const suvo=document.getElementById('suvo').value;
+    const suvo=document.getElementById('suvo').checked;
     const grad=document.getElementById('grad').value;
+    for(const gr of gradovi2){
+        if(gr.id==grad){
+            var g= gr;
+        }
+    }
     const vreme= takmicari[0].vreme;
-    const grad2=gradovi.find(grad3=>grad3.naziv===grad);
     const brojTakmicara= takmicari.length;
-
-    const trka= {grad:grad, duzina:brojKrugova*grad2.duzina, brojKrugova:brojKrugova,brojTakmicara:brojTakmicara ,datum:datum,vreme:vreme,suvo:suvo,takmicari:takmicari};
+    const korisnik={id:1,ime:'Luka',prezime:'Tatovic',username:'luka',password:'luka'};
+    const trka= {brojKrugova:parseInt(brojKrugova),trkaPoSuvom:suvo,grad:g,korisnik:korisnik,takmicari:takmicari};
     console.log(trka);
+    fetch('http://localhost:9000/trka',{
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(trka)
+    })
+    .then(response => {
+        console.log('HTTP odgovor:', response);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Greška:', error);
+    });
+    
 }

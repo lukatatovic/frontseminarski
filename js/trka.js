@@ -1,4 +1,4 @@
-let data=[
+let data1=[
     {id:1,nazivGrada:"Baku",duzina:12000.0,brojKrugova:2,brojTakmicara:2,datum:'2024-09-14',vreme:"01-02-45",trkaPoSuvom:"Da",
     takmicari:[{vozac:"Charles Leclerc",automobil:"Ferrari SF-23",start:2,kraj:1,vremev:"01-02-45",broj:15},{vozac:"Max Verstappen",automobil:"Red Bull RB19",start:1,kraj:2,vremev:"01-03-07",broj:1}]},
     {id:2,nazivGrada:"Monca",duzina:34759.2,brojKrugova:53,brojTakmicara:3,datum:'2023-09-03',vreme:"02-12-25",trkaPoSuvom:"Ne"},
@@ -7,7 +7,25 @@ let data=[
 
 let selectedRace;
 
-document.addEventListener("DOMContentLoaded",()=> {loadTableItems(data);});
+document.addEventListener("DOMContentLoaded",function() {
+    fetch('http://localhost:9000/trka')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadTableItems(data);
+            data1=data;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Greška:', error);
+        });
+}
+
+);
 
 function loadTableItems(items){
     const table= document.getElementById('body');
@@ -15,21 +33,32 @@ function loadTableItems(items){
     for(const item of items){
         dataHtml+=`<tr> 
         <td>${item.id}</td>
-        <td>${item.nazivGrada}</td>
+        <td>${item.grad.naziv}</td>
         <td>${item.duzina}</td>
         <td>${item.brojKrugova}</td>
         <td>${item.brojTakmicara}</td>
         <td>${item.datum}</td>
         <td>${item.vreme}</td>
         <td>${item.trkaPoSuvom}</td> </tr>`
-        
+        //console.log("takmicari  trka id: "+item.id+" "+ item.takmicari);
+       /* for(const takm of item.takmicari){
+            console.log(takm);
+        }*/
     }
     table.innerHTML=dataHtml;
 }
 function search(){
     const searchValue=document.getElementById('search').value.toLowerCase();
-    const filter= data.filter(item=>item.nazivGrada.toLowerCase().includes(searchValue));
-    loadTableItems(filter);
+    fetch(`http://localhost:9000/trka/naziv?naziv=${searchValue}`)
+    .then(response=>{
+        return response.json();
+    }).then(data=>{
+        loadTableItems(data);
+        
+    })
+    .catch(error=> {
+        console.error('Greška:', error);
+    });
     refresh();
 }
 function clicked(){
@@ -39,8 +68,8 @@ function clicked(){
         if(clickedRow){
             let rowData= extractData(clickedRow);
             let number=rowData["ID"];
-            console.log(number);
-            loadTableTakmicari(number-1);
+            selectedRace= rowData;
+            loadTableTakmicari(number);
         }
     })
 }
@@ -59,7 +88,35 @@ function extractData(row){
 }
 function loadTableTakmicari(index){
     const tabelaTakmicari= document.getElementById('body-takmicari');
-    const trka=data[index];
+    var dataTakmicari='';
+    fetch(`http://localhost:9000/takmicar/${index}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            for(const takmicar of data){
+                
+                dataTakmicari+=`<tr> 
+                <td>${takmicar.vozac.ime+' '+takmicar.vozac.prezime}</td>
+                <td>${takmicar.automobil.marka+' '+takmicar.automobil.model}</td>
+                <td>${takmicar.startnaPozicija}</td>
+                <td>${takmicar.zavrsnaPozicija}</td>
+                <td>${takmicar.brojNaAutomobilu}</td>
+                <td>${takmicar.vreme}</td>
+                                 </tr>`
+                                
+            }
+            console.log(dataTakmicari);
+            tabelaTakmicari.innerHTML=dataTakmicari;
+        })
+        .catch(error => {
+            console.error('Greška:', error);
+        });
+    /*
+    const trka=data1[index];
     selectedRace=trka;
     const takmicari= trka.takmicari;
     let dataTakmicari='';
@@ -71,19 +128,49 @@ function loadTableTakmicari(index){
         <td>${takmicar.kraj}</td>
         <td>${takmicar.vremev}</td>
         <td>${takmicar.broj}</td>
-                         </tr>`
+                         </tr>`*/
         
-    }
-    tabelaTakmicari.innerHTML=dataTakmicari;
+    //tabelaTakmicari.innerHTML=dataTakmicari;
 }
 function obrisi(){
-    const race= selectedRace.id;
-    data= data.filter(r=> r.id!=race);
-    loadTableItems(data);
+    const race= selectedRace.ID;
+    fetch(`http://localhost:9000/trka/${race}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+    })
+    .then(data => {
+        console.log('Trka deleted:', data);
+    })
+    .catch(error => {
+        console.error('Greška:', error);
+    });
     refresh();
 }
 function refresh(){
     let tabelaTakmicari2= document.getElementById('body-takmicari');
     let dataHtml2='';
     tabelaTakmicari2.innerHTML=dataHtml2;
+    fetch('http://localhost:9000/trka')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadTableItems(data);
+            data1=data;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Greška:', error);
+        });
+
 }

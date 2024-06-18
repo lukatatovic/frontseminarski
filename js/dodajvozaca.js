@@ -14,6 +14,25 @@ function add(){
     const prezime= document.getElementById('prezime').value;
     const datum= document.getElementById('datum').value;
     const drzava= document.getElementById('drzava').value;
-    const vozac= {ime:ime,prezime:prezime,datumRodjenja:datum,drzava:drzava};
-    console.log(vozac);
+    const vozac= {ime:ime,prezime:prezime,datum_rodjenja:datum,drzava:drzava};
+    fetch('http://localhost:9000/vozac',{
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(vozac)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Greška:', error);
+    });
+    
 }

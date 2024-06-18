@@ -112,6 +112,12 @@ body {
     overflow: hidden; 
     line-height: 20px; 
 }
+.tabela2 {
+    th:nth-child(1),
+    td:nth-child(1) {
+        display: none;
+    }
+}
 .button-pretrazi{
     margin-right: 10px;
 }

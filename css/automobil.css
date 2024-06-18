@@ -113,6 +113,10 @@ body {
     overflow: hidden; 
     line-height: 20px; 
 }
+th:nth-child(1),
+td:nth-child(1) {
+    display: none;
+}
 .button{
     display: flex;
     margin-left: 94%;
